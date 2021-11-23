@@ -1,0 +1,2 @@
+OrderNumber::CustomerName::State::TaxRate::ProductType::Area::CostPerSquareFoot::LaborCostPerSquareFoot::MaterialCost::LaborCost::Tax::Total
+2::Caleb::Texas::4.45::Tile::150::3.50::4.15::525.00::622.50::5106.3750::6253.8750

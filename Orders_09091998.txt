@@ -1,0 +1,2 @@
+OrderNumber::CustomerName::State::TaxRate::ProductType::Area::CostPerSquareFoot::LaborCostPerSquareFoot::MaterialCost::LaborCost::Tax::Total
+2::Caleb::California::25.00::Carpet::100::2.25::2.10::225.00::210.00::10875.0000::11310.0000
