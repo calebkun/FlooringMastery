@@ -40,7 +40,7 @@ public class OrderBookProductDaoFileImpl implements OrderBookProductDao {
     }
     
     /**
-     * Helping function which takes in a String object and uses it to create a 
+     * Helper function which takes in a String object and uses it to create a 
      * BigDecimal object with appropriate scale and rounding.
      * 
      * @param value - String object to be used in BigDecimal constructor

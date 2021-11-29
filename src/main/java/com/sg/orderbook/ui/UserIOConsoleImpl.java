@@ -81,9 +81,9 @@ public class UserIOConsoleImpl implements UserIO {
                 // print the message msgPrompt (ex: asking for the # of cats!)
                 String stringValue = this.readString(msgPrompt);
                 // Get the input line, and try and parse
-                BigDecimal money = new BigDecimal(stringValue); // if it's 'bob' it'll break
-                money.setScale(2, RoundingMode.HALF_UP);
-                return money;
+                BigDecimal bd = new BigDecimal(stringValue); // if it's 'bob' it'll break
+                bd.setScale(2, RoundingMode.HALF_UP);
+                return bd;
             } catch (NumberFormatException e) {
                 // If it explodes, it'll go here and do this.
                 this.print("Input error. Please try again.");

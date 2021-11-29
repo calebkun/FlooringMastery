@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.03" tests="1" errors="0" skipped="0" failures="1">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.204" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.12+7"/>
@@ -64,9 +64,8 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="testSomeMethod" classname="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.029">
-    <failure message="The test case is a prototype." type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: The test case is a prototype.
-	at com.sg.orderbook.dao.OrderBookDaoFileImplTest.testSomeMethod(OrderBookDaoFileImplTest.java:34)
-</failure>
-  </testcase>
+  <testcase name="testEditOrder" classname="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.142"/>
+  <testcase name="testRemoveOrder" classname="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.008"/>
+  <testcase name="testAddGetOrder" classname="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.003"/>
+  <testcase name="testAddGetAllOrders" classname="com.sg.orderbook.dao.OrderBookDaoFileImplTest" time="0.011"/>
 </testsuite>

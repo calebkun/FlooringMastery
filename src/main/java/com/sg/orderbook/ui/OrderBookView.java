@@ -82,6 +82,11 @@ public class OrderBookView {
         return order;
     }
     
+    /**
+     * Prompts user to confirm that they would like to place the order.
+     * 
+     * @return int user selection
+     */
     public int getAddOrderConfirmation(){
         io.print("Place order?");
         io.print("1. Yes");
@@ -91,10 +96,12 @@ public class OrderBookView {
     
     /**
      * Takes in an order object, prompts the user to update information for 
-     * the order, and returns an order object with the updated information.
+     * the order, displays updated information to user and prompts user to confirm
+     * edits, and returns an order object with the updated information or null if
+     * no such order exists.
      * 
      * @param orderToEdit - order object selected by user to edit
-     * @return Order object with updated information created from user input
+     * @return Order object with updated information created from user input or null
      */
     public Order getEditOrderInfo(Order orderToEdit){
         if(orderToEdit != null){
@@ -124,7 +131,7 @@ public class OrderBookView {
                     edited.setOrderNumber(orderToEdit.getOrderNumber());
                     return edited;
                 case 2:
-                    return orderToEdit;
+                    return null;
             }
         } else {
             io.print("No such order exists.");
@@ -132,6 +139,11 @@ public class OrderBookView {
         return null;
     }
     
+    /**
+     * Prompts user to confirm that they would like to remove the order.
+     * 
+     * @return int user selection
+     */
     public int getRemoveConfirmation(){
         io.print("Are you sure you would like to remove the order?");
         io.print("1. Yes");
@@ -221,7 +233,9 @@ public class OrderBookView {
         //temp implementation
         if (order != null) {
             io.print("");
-            io.print("ORDER #"+String.valueOf(order.getOrderNumber())); 
+            if(order.getOrderNumber() != 0){
+                io.print("ORDER #"+String.valueOf(order.getOrderNumber()));
+            }
             io.print("* Order date: "+order.getOrderDate());
             io.print("* Customer name: "+order.getCustomerName());
             io.print("* State: "+order.getState());
@@ -236,7 +250,8 @@ public class OrderBookView {
             io.print("* Area: "+order.getArea());
             io.print("");
         } else {
-            io.print("No such order.");
+            io.print("");
+            io.readString("No such order exists. Please hit enter to continue.");
             io.print("");
         }
     }
@@ -250,6 +265,7 @@ public class OrderBookView {
     }
     
     public void displayOrderSummaryBanner(){
+                io.print("");
         io.print("===Order Summary===");
     }
     
@@ -259,6 +275,7 @@ public class OrderBookView {
     }
     
     public void displayOrderNotPlacedBanner(){
+        io.print("");
         io.readString("Order was not placed. Please hit enter to continue.");
     }
     

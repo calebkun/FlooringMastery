@@ -24,38 +24,52 @@ public interface OrderBookServiceLayer {
         State must exist in tax file.
         Product must exist in product file.
         Area must be positive decimal, minimum of 100 sq ft.
+        Only customerName, state, productType, and area may be edited.
     
     */
     
     /**
      * Takes in an order object created from user input, validates it
      * against our business logic, calculates relevant order data,
-     * and returns the validated order object.
+     * and returns the validated order object with completed calculations.
      * 
      * @param order
-     * @return
+     * @return Order object that has been validated
      * @throws OrderBookPersistenceException
      * @throws OrderBookInvalidAreaException
      * @throws OrderBookInvalidDateException
      * @throws OrderBookProductException
      * @throws OrderBookTaxException 
+     * @throws OrderBookIncompleteOrderException
+     * 
      */
     Order validateOrder(Order order) throws
             OrderBookPersistenceException,
             OrderBookInvalidAreaException,
             OrderBookInvalidDateException,
             OrderBookProductException,
-            OrderBookTaxException;
+            OrderBookTaxException,
+            OrderBookIncompleteOrderException;
     
     /**
-     * Takes in an order object created from user input and uses dao method 
-     * to persist it should it be a valid order. 
+     * Takes in an order object created from user input, double checks that the order
+     * is valid, and uses dao method to persist it should it be a valid order. 
      * 
      * @param order object to be persisted
-     * @throws OrderBookPersistenceException 
+     * @throws OrderBookPersistenceException      
+     * @throws OrderBookInvalidAreaException
+     * @throws OrderBookInvalidDateException
+     * @throws OrderBookProductException
+     * @throws OrderBookTaxException 
+     * @throws OrderBookIncompleteOrderException
      */
     void createOrder(Order order) throws
-            OrderBookPersistenceException;
+            OrderBookPersistenceException,
+            OrderBookInvalidAreaException,
+            OrderBookInvalidDateException,
+            OrderBookProductException,
+            OrderBookTaxException,
+            OrderBookIncompleteOrderException;
     
     /**
      * Takes in a LocalDate object containing an order date and calls dao method to
@@ -82,23 +96,39 @@ public interface OrderBookServiceLayer {
             OrderBookPersistenceException;
     
     /**
-     * Takes in order object and calls dao method to remove the order.
+     * Takes in order date and order number from user input and calls dao method to remove the order.
+     * Returns removed order object or null if no such order exists.
      * 
-     * @param order to remove
+     * @param orderDate - LocalDate object containing order date from user input
+     * @param orderNumber - int containing order number
      * @throws OrderBookPersistenceException 
      */
-    void removeOrder(Order order) throws
+    Order removeOrder(LocalDate orderDate, int orderNumber) throws
             OrderBookPersistenceException;
     
     /**
-     * Takes in order object edited from user input and, if valid,
-     * calls dao method to persist the object.
+     * Takes in original order object and order object edited from user input.
+     * Double checks that the edited order is valid, ensures only permitted fields were edited, 
+     * and calls dao method to persist the object.
      * 
+     * @param originalOrder - order object to be edited
      * @param editedOrder - object containing updated order info
      * @throws OrderBookPersistenceException
+     * @throws OrderBookInvalidAreaException
+     * @throws OrderBookInvalidDateException
+     * @throws OrderBookProductException
+     * @throws OrderBookTaxException 
+     * @throws OrderBookIncompleteOrderException
+     * @throws OrderBookInvalidEditException
      */
-    void editOrder(Order editedOrder) throws
-            OrderBookPersistenceException;
+    void editOrder(Order originalOrder, Order editedOrder) throws
+            OrderBookPersistenceException,
+            OrderBookInvalidAreaException,
+            OrderBookInvalidDateException,
+            OrderBookProductException,
+            OrderBookTaxException,
+            OrderBookIncompleteOrderException,
+            OrderBookInvalidEditException;
     
     /**
      * Calls productDao method to return list of products.

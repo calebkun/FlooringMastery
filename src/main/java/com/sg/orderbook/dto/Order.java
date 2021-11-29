@@ -29,7 +29,24 @@ public class Order {
     private BigDecimal tax;
     private BigDecimal total;
     
-     /**
+    /**
+     * Constructor for Order object.
+     * 
+     * @param orderDate
+     * @param customerName
+     * @param state
+     * @param productType
+     * @param area 
+     */
+    public Order(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area){
+        this.orderDate = orderDate;
+        this.customerName = customerName;
+        this.state = state;
+        this.productType = productType;
+        this.area = area;
+    }
+    
+    /**
      * Calculates material cost using cost per sq ft and area
      */
     private void calculateMaterialCost(){
@@ -67,20 +84,20 @@ public class Order {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.orderDate);
-        hash = 59 * hash + this.orderNumber;
-        hash = 59 * hash + Objects.hashCode(this.customerName);
-        hash = 59 * hash + Objects.hashCode(this.state);
-        hash = 59 * hash + Objects.hashCode(this.productType);
-        hash = 59 * hash + Objects.hashCode(this.area);
-        hash = 59 * hash + Objects.hashCode(this.taxRate);
-        hash = 59 * hash + Objects.hashCode(this.costPerSquareFoot);
-        hash = 59 * hash + Objects.hashCode(this.laborCostPerSquareFoot);
-        hash = 59 * hash + Objects.hashCode(this.materialCost);
-        hash = 59 * hash + Objects.hashCode(this.laborCost);
-        hash = 59 * hash + Objects.hashCode(this.tax);
-        hash = 59 * hash + Objects.hashCode(this.total);
+        int hash = 3;
+        hash = 73 * hash + Objects.hashCode(this.orderDate);
+        hash = 73 * hash + this.orderNumber;
+        hash = 73 * hash + Objects.hashCode(this.customerName);
+        hash = 73 * hash + Objects.hashCode(this.state);
+        hash = 73 * hash + Objects.hashCode(this.productType);
+        hash = 73 * hash + Objects.hashCode(this.area);
+        hash = 73 * hash + Objects.hashCode(this.taxRate);
+        hash = 73 * hash + Objects.hashCode(this.costPerSquareFoot);
+        hash = 73 * hash + Objects.hashCode(this.laborCostPerSquareFoot);
+        hash = 73 * hash + Objects.hashCode(this.materialCost);
+        hash = 73 * hash + Objects.hashCode(this.laborCost);
+        hash = 73 * hash + Objects.hashCode(this.tax);
+        hash = 73 * hash + Objects.hashCode(this.total);
         return hash;
     }
 
@@ -140,30 +157,11 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" + "orderDate=" + orderDate + ", orderNumber=" + orderNumber + 
-                ", customerName=" + customerName + ", state=" + state + ", productType="
-                + productType + ", area=" + area + ", taxRate=" + taxRate + 
-                ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" 
-                + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" 
-                + laborCost + ", tax=" + tax + ", total=" + total + '}';
+        return "Order{" + "orderDate=" + orderDate + ", orderNumber=" + orderNumber + ", customerName=" + customerName + ", state=" + state + ", productType=" + productType + ", area=" + area + ", taxRate=" + taxRate + ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + '}';
     }
 
-    /**
-     * Constructor for Order object.
-     * 
-     * @param orderDate
-     * @param customerName
-     * @param state
-     * @param productType
-     * @param area 
-     */
-    public Order(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area){
-        this.orderDate = orderDate;
-        this.customerName = customerName;
-        this.state = state;
-        this.productType = productType;
-        this.area = area;
-    }
+    
+    
     
     /**
      * Carries out calculations using member helper methods

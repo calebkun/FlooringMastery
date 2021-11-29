@@ -1,0 +1,4 @@
+OrderNumber::CustomerName::State::TaxRate::ProductType::Area::CostPerSquareFoot::LaborCostPerSquareFoot::MaterialCost::LaborCost::Tax::Total
+1::Alec::California::25.00::Tile::150::3.50::4.15::525.00::622.50::28687.5000::29835.0000
+2::Caleb::Texas::4.45::Laminate::100::1.75::2.10::175.00::210.00::1713.2500::2098.2500
+3::Caleb::Texas::4.45::Wood::100::5.15::4.75::515.00::475.00::4405.5000::5395.5000

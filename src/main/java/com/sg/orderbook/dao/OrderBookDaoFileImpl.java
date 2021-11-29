@@ -40,7 +40,7 @@ public class OrderBookDaoFileImpl implements OrderBookDao {
     // map containing records for our Orders with order number as key
     private Map<Integer, Order> orderBook = new HashMap<>();
     
-    
+    // default constructor which initializes orderbook file path stem
     public OrderBookDaoFileImpl(){
         this.ORDERBOOK_FILE = "Orders_";
     }
@@ -50,67 +50,8 @@ public class OrderBookDaoFileImpl implements OrderBookDao {
         this.ORDERBOOK_FILE = file_name;
     }
     
-    /**
-     * Helper method which takes a LocalDate object, converts it to a String of the
-     * appropriate format for our orders file name, and returns a String of the appropriate
-     * file name and path.
-     * 
-     * @param date - LocalDate to convert
-     * @return String containing file path
-     */
-    private String dateToPath(LocalDate date){
-        String dateAsString = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
-        String dateAsPath = ORDERBOOK_FILE+dateAsString+".txt";
-        return dateAsPath;
-    }
-    
-    /**
-     * Helper object which takes a LocalDate object, calls dateToPath() to create the
-     * appropriate file path, and then create the file if it does not already exist. Returns
-     * the file path to be read from/written to, or throws exception.
-     * 
-     * @param date - LocalDate to pass to dateToPath
-     * @return String with file path
-     * @throws OrderBookPersistenceException 
-     */
-    private String processDate(LocalDate date) throws OrderBookPersistenceException{
-        String dateAsPath = dateToPath(date);
-        try {
-            File myObj = new File(dateAsPath);
-            if (myObj.createNewFile()) {
-                PrintWriter out;
-                try {
-                    out = new PrintWriter(new FileWriter(dateAsPath));
-                } catch (IOException e) {
-                    throw new OrderBookPersistenceException(
-                            "Could not save order data.", e);
-                }
+// File persistence methods
 
-                // Add header
-                out.println(HEADER);
-                out.flush();
-              return dateAsPath;
-            } else {
-              return dateAsPath;
-            }
-        } catch (IOException e) {
-          throw new OrderBookPersistenceException("Order file "+dateAsPath+" could not be opened.");
-        }
-    }
-    
-    /**
-     * Helper function which takes in a String object and uses it to create a 
-     * BigDecimal object with appropriate scale and rounding.
-     * 
-     * @param value - String object to be used in BigDecimal constructor
-     * @return BigDecimal value
-     */
-    private BigDecimal toBigDecimal(String value){
-        BigDecimal bd = new BigDecimal(value);
-        bd.setScale(2, RoundingMode.HALF_UP);
-        return bd;
-    }
-    
     /**
      * Responsible for taking a line from our file and parsing the line to
      * extract info needed to create a corresponding Order object.
@@ -277,18 +218,83 @@ public class OrderBookDaoFileImpl implements OrderBookDao {
         out.flush();
         
         // Write out the Order objects to the orderBook file.
-        String OrderAsText;
         List<Order> OrderList = this.getAllOrdersHelper();
-        for (Order currentOrder : OrderList) {
-            // turn an Order into a String
-            OrderAsText = marshallOrder(currentOrder);
-            // write the Order object to the file
-            out.println(OrderAsText);
-            // force PrintWriter to write line to the file
-            out.flush();
-        }
+        
+        OrderList.stream()
+                .forEach((currentOrder) -> {
+                    // turn an Order into a String
+                    String OrderAsText = marshallOrder(currentOrder);
+                    // write the Order object to the file
+                    out.println(OrderAsText);
+                    // force PrintWriter to write line to the file
+                    out.flush();
+                });
+        
         // Clean up
         out.close();
+    }
+    
+// Helper methods
+    
+    /**
+     * Helper method which takes a LocalDate object, converts it to a String of the
+     * appropriate format for our orders file name, and returns a String of the appropriate
+     * file name and path.
+     * 
+     * @param date - LocalDate to convert
+     * @return String containing file path
+     */
+    private String dateToPath(LocalDate date){
+        String dateAsString = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
+        String dateAsPath = ORDERBOOK_FILE+dateAsString+".txt";
+        return dateAsPath;
+    }
+    
+    /**
+     * Helper method which takes a LocalDate object, calls dateToPath() to create the
+     * appropriate file path, and then create the file if it does not already exist. Returns
+     * the file path to be read from/written to, or throws exception.
+     * 
+     * @param date - LocalDate to pass to dateToPath
+     * @return String with file path
+     * @throws OrderBookPersistenceException 
+     */
+    private String processDate(LocalDate date) throws OrderBookPersistenceException{
+        String dateAsPath = dateToPath(date);
+        try {
+            File myObj = new File(dateAsPath);
+            if (myObj.createNewFile()) {
+                PrintWriter out;
+                try {
+                    out = new PrintWriter(new FileWriter(dateAsPath));
+                } catch (IOException e) {
+                    throw new OrderBookPersistenceException(
+                            "Could not save order data.", e);
+                }
+
+                // Add header
+                out.println(HEADER);
+                out.flush();
+              return dateAsPath;
+            } else {
+              return dateAsPath;
+            }
+        } catch (IOException e) {
+          throw new OrderBookPersistenceException("Order file "+dateAsPath+" could not be opened.");
+        }
+    }    
+
+    /**
+     * Helper function which takes in a String object and uses it to create a 
+     * BigDecimal object with appropriate scale and rounding.
+     * 
+     * @param value - String object to be used in BigDecimal constructor
+     * @return BigDecimal value
+     */
+    private BigDecimal toBigDecimal(String value){
+        BigDecimal bd = new BigDecimal(value);
+        bd.setScale(2, RoundingMode.HALF_UP);
+        return bd;
     }
     
     /**
@@ -303,6 +309,7 @@ public class OrderBookDaoFileImpl implements OrderBookDao {
         return new ArrayList<Order>(orderBook.values());
     }
     
+// Overriden Implementations of interface methods
     @Override
     public Order addOrder(Order order) throws OrderBookPersistenceException {
         loadOrderBook(order.getOrderDate());
@@ -313,19 +320,19 @@ public class OrderBookDaoFileImpl implements OrderBookDao {
     }
 
     @Override
-    public Order editOrder(Order order) throws OrderBookPersistenceException {
-        loadOrderBook(order.getOrderDate());
+    public Order editOrder(LocalDate orderDate, int orderNumber, Order order) throws OrderBookPersistenceException {
+        loadOrderBook(orderDate);
         order.CalculateFields();
-        orderBook.put(order.getOrderNumber(), order);
-        writeOrderBook(order.getOrderDate());
-        return order;
+        Order prevOrder = orderBook.put(orderNumber, order);
+        writeOrderBook(orderDate);
+        return prevOrder;
     }
 
     @Override
-    public Order removeOrder(Order order) throws OrderBookPersistenceException {
-        loadOrderBook(order.getOrderDate());
-        Order removedOrder = orderBook.remove(order.getOrderNumber()); 
-        writeOrderBook(order.getOrderDate());
+    public Order removeOrder(LocalDate orderDate, int orderNumber) throws OrderBookPersistenceException {
+        loadOrderBook(orderDate);
+        Order removedOrder = orderBook.remove(orderNumber); 
+        writeOrderBook(orderDate);
         return removedOrder;
     }
 
@@ -338,7 +345,12 @@ public class OrderBookDaoFileImpl implements OrderBookDao {
     @Override
     public List<Order> getAllOrders(LocalDate orderDate) throws OrderBookPersistenceException {
         loadOrderBook(orderDate);
-        return new ArrayList<Order>(orderBook.values());
+        List<Order> orders = new ArrayList<Order>(orderBook.values());
+        if(!orders.isEmpty()) {
+            return new ArrayList<Order>(orderBook.values());
+        } else {
+            return null;
+        }
     }
     
 }
